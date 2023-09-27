@@ -1,0 +1,84 @@
+{
+  "rabbit_version": "3.11.20",
+  "users": [
+    {
+      "name": "guest",
+      "password_hash": "KTDjB8nc30UwTQveVRjL8/qJ+lGBXwlNtkkvkhLOZs6621M0",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": "administrator"
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [
+    {
+      "value": {
+        "ack-mode": "on-confirm",
+        "dest-add-forward-headers": true,
+        "dest-add-timestamp-header": true,
+        "dest-exchange": "dest.cluster.exchange",
+        "dest-protocol": "amqp091",
+        "dest-uri": "amqp://guest:guest@rabbit-dest:5672",
+        "dest-exchange-key": "orders",
+        "src-delete-after": "never",
+        "src-protocol": "amqp091",
+        "src-exchange": "src.cluster.exchange",
+        "src-uri": "amqp://guest:guest@rabbit-src:5672",
+        "src-exchange-key": "orders"
+      },
+      "vhost": "/",
+      "component": "shovel",
+      "name": "demo.shovel"
+    }
+  ],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "rabbit@129582ce5a5e"
+    }
+  ],
+  "policies": [],
+  "queues": [
+    {
+      "name": "orders.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "dest.cluster.exchange",
+      "vhost": "/",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "dest.cluster.exchange",
+      "vhost": "/",
+      "destination": "orders.queue",
+      "destination_type": "queue",
+      "routing_key": "orders",
+      "arguments": {}
+    }
+  ]
+}

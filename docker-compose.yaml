@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  rabbit-src:
+    build:
+      context: rabbit-src
+    container_name: rabbit-src
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  rabbit-dest:
+    build:
+      context: rabbit-dest
+    container_name: rabbit-dest
+    ports:
+      - "10000:5672"
+      - "25672:15672"
