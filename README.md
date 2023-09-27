@@ -11,6 +11,18 @@ Start
 
 > docker compose up -d
 
+Run consumer
+
+> go run consumer.go orders
+
+`orders` is routing key
+
+Run publisher
+
+> go run publisher.go hello goodbye
+
+where hello and goodbye is message content.
+
 Access management UI
   - Source: http://localhost:15672 guest/guest
   - Dest: http://localhost:25672 guest/guest
