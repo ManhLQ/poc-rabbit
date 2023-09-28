@@ -7,9 +7,25 @@ Build
 
 > docker compose build
 
-Start
+Start rabbitmq server
 
 > docker compose up -d
+
+## Scenario
+
+  1. [Publisher] --> (== Source cluster ==) --> [Consumer1]
+
+  2. Configuring shovel on `Destination Cluster`.
+
+  3. `Consumer2` consuming message from `Destination cluster`
+
+  4. `Publisher` sending messages to `Destination cluster`
+
+  5. Configuring shovel on `Source cluster` (message from Source cluster starts forwarding to `Destination cluster`)
+
+  6. Monitoring when `Source cluster` queue is empty.
+
+  7. Shutdown `Consumer1` 
 
 Run consumer
 

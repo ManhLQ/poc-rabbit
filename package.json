@@ -1,0 +1,25 @@
+{
+  "name": "poc-rabbit",
+  "version": "1.0.0",
+  "description": "A POC of forwarding messages from cluster 1 to cluster 2 using Shovel plugin.",
+  "main": "index.js",
+  "scripts": {
+    "consumer1": "node ./src/consumer.js",
+    "consumer2": "node ./src/consumer.js",
+    "publisher": "node ./src/publisher.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManhLQ/poc-rabbit.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ManhLQ/poc-rabbit/issues"
+  },
+  "homepage": "https://github.com/ManhLQ/poc-rabbit#readme",
+  "dependencies": {
+    "amqplib": "^0.10.3",
+    "dotenv": "^16.3.1"
+  }
+}
