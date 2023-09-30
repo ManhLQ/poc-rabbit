@@ -66,24 +66,24 @@ curl -i -u guest:guest -H "content-type:application/json" \
 
 Declare shovel `orders.shovel`
 ```sh
-  curl -v -u guest:guest -X PUT http://localhost:15672/api/parameters/shovel/%2f/orders.shovel \
-    -H "content-type: application/json" \
-    -d @- <<EOF
-    {
-      "value": {
-        "src-protocol": "amqp091",
-        "src-uri": "amqp://guest:guest@rabbit-src:5672",
-        "src-exchange": "orders.exchange",
-        "src-exchange-key": "orders",
-        "dest-protocol": "amqp091",
-        "dest-uri": "amqp://guest:guest@rabbit-dest:5672", 
-        "dest-exchange": "dest.cluster.exchange",
-        "dest-exchange-key": "orders",
-        "dest-add-forward-headers": true,
-        "dest-add-timestamp-header": true
-      }
+curl -v -u guest:guest -X PUT http://localhost:15672/api/parameters/shovel/%2f/orders.shovel \
+  -H "content-type: application/json" \
+  -d @- <<EOF
+  {
+    "value": {
+      "src-protocol": "amqp091",
+      "src-uri": "amqp://guest:guest@rabbit-src:5672",
+      "src-exchange": "orders.exchange",
+      "src-exchange-key": "orders",
+      "dest-protocol": "amqp091",
+      "dest-uri": "amqp://guest:guest@rabbit-dest:5672", 
+      "dest-exchange": "dest.cluster.exchange",
+      "dest-exchange-key": "orders",
+      "dest-add-forward-headers": true,
+      "dest-add-timestamp-header": true
     }
-  EOF
+  }
+EOF
 ```
 
 Delete shovel

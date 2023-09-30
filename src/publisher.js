@@ -1,4 +1,4 @@
-const amqp = require('amqplib/callback_api');
+const amqp = require('amqplib');
 var config = require('./config')
 
 var args = process.argv.slice(1);
@@ -9,33 +9,30 @@ let queueUri = switched ? config['destUri'] : config['sourceUri']
 const exchange = switched ? config['destExchange'] : config['sourceExchange'];
 const routingKey = config['routingKey'];
 const MAX_MSG = 100;
-
-amqp.connect(queueUri, (err, connection) => {
-    console.log(`Connected to ${switched ? 'new' : 'current'} cluster at ${queueUri}`)
-    if (err) return bail(err);
-    connection.createChannel((err, channel) => {
-        if (err) return bail(err, connection);
-        channel.assertExchange(exchange, 'topic', { durable: true }, (err) => {
-            if (err) return bail(err, connection);
-            console.log(`Publishing message to exchange ${exchange} on routing key ${routingKey}`)
-            let counter = 0;
-            while (counter < MAX_MSG) {
-                const text = `Order-${counter + 1 + (switched ? MAX_MSG : 0)}`
-                channel.publish(exchange, routingKey, Buffer.from(text));
-                console.log(" [x] Sent '%s'", text);
-                counter += 1;
-            }
-
-            channel.close(() => {
-                connection.close();
-            });
-        });
-    });
-});
-
-function bail(err, connection) {
-    console.error(err);
-    if (connection) connection.close(() => {
+const main = async () => {
+    try {
+        const connection = await amqp.connect(queueUri);
+        console.log(`Connected to ${switched ? 'new' : 'current'} cluster at ${queueUri}`)
+        console.log(connection);
+        const channel = await connection.createConfirmChannel();
+        await channel.assertExchange(exchange, 'topic', { durable: true, autoDelete: false, });
+        console.log(`Publishing message to exchange ${exchange} on routing key ${routingKey}`)
+        let counter = 1;
+        const sendingIntv = setInterval(() => {
+            const msg = `Order${switched ? '-new' : ''}-${counter}`;
+            console.log(" [x] Sent '%s'", msg);
+            channel.publish(exchange, routingKey, Buffer.from(msg))
+            counter++;
+        }, 1000);
+        // Close connection
+        // setTimeout(() => {
+        //     connection.close();
+        //     process.exit(0);
+        // }, 500);
+    }
+    catch (err) {
         process.exit(1);
-    });
+    }
 }
+
+main();
