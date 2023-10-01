@@ -11,6 +11,9 @@
   "vhosts": [
     {
       "name": "/"
+    },
+    {
+      "name": "checkout"
     }
   ],
   "permissions": [
@@ -20,41 +23,29 @@
       "configure": ".*",
       "write": ".*",
       "read": ".*"
+    },
+    {
+      "user": "guest",
+      "vhost": "checkout",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
     }
   ],
   "topic_permissions": [],
   "parameters": [
-    {
-      "value": {
-        "ack-mode": "on-confirm",
-        "dest-add-forward-headers": true,
-        "dest-add-timestamp-header": true,
-        "dest-exchange": "dest.cluster.exchange",
-        "dest-protocol": "amqp091",
-        "dest-uri": "amqp://guest:guest@rabbit-dest:5672",
-        "dest-exchange-key": "orders",
-        "src-delete-after": "never",
-        "src-protocol": "amqp091",
-        "src-exchange": "src.cluster.exchange",
-        "src-uri": "amqp://guest:guest@rabbit-src:5672",
-        "src-exchange-key": "orders"
-      },
-      "vhost": "/",
-      "component": "shovel",
-      "name": "demo.shovel"
-    }
   ],
   "global_parameters": [
     {
       "name": "cluster_name",
-      "value": "rabbit@129582ce5a5e"
+      "value": "Dream Land"
     }
   ],
   "policies": [],
   "queues": [
     {
       "name": "orders.queue",
-      "vhost": "/",
+      "vhost": "checkout",
       "durable": true,
       "auto_delete": false,
       "arguments": {}
@@ -62,8 +53,8 @@
   ],
   "exchanges": [
     {
-      "name": "dest.cluster.exchange",
-      "vhost": "/",
+      "name": "orders.exchange",
+      "vhost": "checkout",
       "type": "topic",
       "durable": true,
       "auto_delete": false,
@@ -73,8 +64,8 @@
   ],
   "bindings": [
     {
-      "source": "dest.cluster.exchange",
-      "vhost": "/",
+      "source": "orders.exchange",
+      "vhost": "checkout",
       "destination": "orders.queue",
       "destination_type": "queue",
       "routing_key": "orders",
